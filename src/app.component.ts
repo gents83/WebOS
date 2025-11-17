@@ -17,7 +17,56 @@ import { FileSystemService } from './services/file-system.service';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
+  template: `
+<div 
+  #desktop 
+  class="h-screen w-screen bg-cover bg-center transition-all duration-500 relative" 
+  [style.backgroundImage]="'url(' + wallpaperUrl() + ')'" 
+  (click)="onDesktopClick()"
+  (dragover)="onDesktopDragOver($event)"
+  (drop)="onDesktopDrop($event)"
+>
+  <!-- Desktop Icons -->
+  @for(app of launchableApps(); track app.id) {
+    <app-desktop-icon 
+      [app]="app"
+      (launch)="openApp($event)"
+      (launchWithFile)="openAppWithFile($event)"
+      (dragStart)="onIconDragStart($event)"
+    ></app-desktop-icon>
+  }
+
+  <!-- Windows -->
+  @for (win of windows(); track win.id) {
+    @if (win.state !== 'minimized') {
+      <app-window
+        [window]="win"
+        (windowFocus)="focusWindow($event)"
+        (windowStateChange)="handleWindowStateChange($event)"
+        (windowDrag)="updateWindowState($event.id, { position: $event.position })"
+        (windowResize)="updateWindowState($event.id, { size: $event.size })"
+        (windowUpdate)="updateWindowState($event.id, $event.changes)"
+      >
+      </app-window>
+    }
+  }
+</div>
+
+@if (isStartMenuOpen()) {
+  <app-start-menu
+    [apps]="launchableApps()"
+    (launchApp)="openApp($event)"
+  ></app-start-menu>
+}
+
+<app-taskbar
+  [openWindows]="windows()"
+  (focusWindow)="focusWindow($event)"
+  (minimizeWindow)="handleWindowStateChange({ id: $event, state: 'minimized' })"
+  (toggleStartMenu)="toggleStartMenu()"
+  (showDesktop)="onShowDesktop()"
+  (launchWithFile)="openAppWithFile($event)"
+></app-taskbar>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
@@ -251,7 +300,9 @@ export class AppComponent {
       this.windows.update(currentWindows => 
         currentWindows.map(w => 
           idsToMinimize.includes(w.id) 
-            ? { ...w, state: 'minimized', prevStateBeforeMinimize: w.state } 
+            // Fix: Explicitly check for valid previous states to satisfy TypeScript.
+            // The state will always be 'normal' or 'maximized' here, but this makes the type checker happy.
+            ? { ...w, state: 'minimized', prevStateBeforeMinimize: (w.state === 'normal' || w.state === 'maximized') ? w.state : 'normal' } 
             : w
         )
       );

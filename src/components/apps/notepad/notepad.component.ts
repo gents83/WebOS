@@ -6,7 +6,47 @@ import { FileSystemService } from '../../../services/file-system.service';
 
 @Component({
   selector: 'app-notepad',
-  templateUrl: './notepad.component.html',
+  template: `
+<div class="h-full w-full flex flex-col bg-zinc-900 text-white">
+  <textarea 
+    class="flex-grow w-full p-4 bg-transparent text-white font-mono focus:outline-none resize-none"
+    placeholder="Start typing..."
+    [value]="content()"
+    (input)="content.set($event.target.value)">
+  </textarea>
+  
+  @if (isAiConfigured) {
+    <div class="flex-shrink-0 p-2 border-t border-white/10 flex items-center gap-2 bg-zinc-800">
+      <input 
+        type="text" 
+        placeholder="Ask AI to edit, summarize, or continue..."
+        class="flex-grow bg-zinc-700 rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        [value]="aiPrompt()"
+        (input)="aiPrompt.set($event.target.value)"
+        (keydown.enter)="onAskAi()"
+        [disabled]="isLoading()"
+      />
+      <button 
+        (click)="onAskAi()" 
+        [disabled]="isLoading() || !aiPrompt()"
+        class="px-4 py-1.5 bg-blue-600 text-white rounded text-sm font-semibold hover:bg-blue-500 disabled:bg-zinc-600 disabled:cursor-not-allowed flex items-center justify-center w-28">
+        @if (isLoading()) {
+          <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span>Thinking...</span>
+        } @else {
+          <span>Ask AI</span>
+        }
+      </button>
+    </div>
+  } @else {
+    <div class="flex-shrink-0 p-2 border-t border-white/10 text-center text-xs text-yellow-400 bg-zinc-800">
+      AI features disabled. Set API_KEY to enable Gemini.
+    </div>
+  }
+</div>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [FormsModule, CommonModule]
 })

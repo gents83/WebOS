@@ -21,7 +21,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Single deployment job since there's no build step
+  # Build and deploy job
   deploy:
     environment:
       name: github-pages
@@ -31,28 +31,43 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # The project uses CDN links and has no build step.
-      # We need to adjust the base href for GitHub Pages sub-directory hosting.
-      - name: Adapt base href for GitHub Pages
-        run: |
-          REPO_NAME="${{ github.event.repository.name }}"
-          # If the repo name is in the format <username>.github.io, then base href should be '/'
-          # Otherwise, it should be '/<repo_name>/'
-          if [[ "$REPO_NAME" == *".github.io"* ]]; then
-            echo "Repository is a user/org page. Keeping base href as '/'."
-          else
-            echo "Updating base href to '/$REPO_NAME/'"
-            sed -i "s|<base href=\"/\" />|<base href=\"/$REPO_NAME/\" />|" index.html
-          fi
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
 
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build application
+        run: npm run build
+
+      - name: Prepare index.html for deployment
+        run: |
+          # Create dist directory if it doesn't exist (build script should create it)
+          mkdir -p dist
+          # Copy original to dist folder
+          cp index.html dist/
+          # Remove importmap from the copy in dist
+          sed -i '/<script type="importmap">/,/<\/script>/d' dist/index.html
+          # Add bundled script to the copy in dist
+          sed -i 's,<\/app-root>,& \n    <script src="main.js" type="module"></script>,' dist/index.html
+          # Adjust base href in the copy in dist
+          REPO_NAME="${{ github.event.repository.name }}"
+          if [[ "$REPO_NAME" != *".github.io"* ]]; then
+            echo "Updating base href to '/$REPO_NAME/'"
+            sed -i "s|<base href=\"/\" />|<base href=\"/$REPO_NAME/\" />|" dist/index.html
+          fi
+      
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
-          path: '.'
+          # Upload the dist directory
+          path: './dist'
 
       - name: Deploy to GitHub Pages
         id: deployment
