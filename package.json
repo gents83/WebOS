@@ -6,6 +6,6 @@
     "build": "esbuild index.tsx --bundle --outfile=dist/main.js --format=esm --minify --sourcemap --define:ngDevMode=false --define:ngJitMode=false"
   },
   "devDependencies": {
-    "esbuild": "^0.20.2"
+    "esbuild": "^0.23.0"
   }
 }
