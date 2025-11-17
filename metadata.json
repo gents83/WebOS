@@ -1,0 +1,5 @@
+{
+  "name": "WebOS Windows-like",
+  "description": "A web-based simulation of the Windows 11 desktop environment, built with Angular and Tailwind CSS. It features a taskbar, start menu, and draggable, resizable windows for applications like Notepad (with AI integration), Calculator, Browser, and more.",
+  "requestFramePermissions": []
+}
