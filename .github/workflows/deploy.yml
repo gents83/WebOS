@@ -45,9 +45,7 @@ jobs:
         
       - run: |
           npm run build --if-present
-          npm install -D tailwindcss postcss autoprefixer esbuild
-          npx tailwindcss init
-          cp index.html dist/index.html  # <--- ADD THIS LINE
+          cp index.html dist/index.html
           
       - name: Setup Pages
         uses: actions/configure-pages@v5
