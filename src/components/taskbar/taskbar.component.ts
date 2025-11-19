@@ -2,6 +2,7 @@ import { Component, ChangeDetectionStrategy, input, output, signal, inject, comp
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import type { AppWindow } from '../../models/app.model';
 import { interval } from 'rxjs';
+import { FocusService } from '../../services/focus.service';
 
 @Component({
   selector: 'app-taskbar',
@@ -31,8 +32,8 @@ import { interval } from 'rxjs';
           <img [src]="app.icon" [alt]="app.title" class="h-7 w-7 drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
           <span 
             class="absolute bottom-0.5 left-1/2 -translate-x-1/2 h-1 bg-blue-400 rounded-full transition-all duration-200"
-            [class.w-4]="!isActive(app.appId)"
-            [class.w-6]="isActive(app.appId)">
+            [class.w-4]="activeAppId() !== app.appId"
+            [class.w-6]="activeAppId() === app.appId">
           </span>
         </button>
       }
@@ -106,6 +107,8 @@ export class TaskbarComponent {
 
   private platformId = inject(PLATFORM_ID);
   private destroyRef = inject(DestroyRef);
+  private focusService = inject(FocusService);
+  activeAppId = this.focusService.activeAppId;
 
   constructor() {
     interval(1000).subscribe(() => {
@@ -151,24 +154,12 @@ export class TaskbarComponent {
     }
   }
   
-  private highestZIndex = computed(() => {
-      const windows = this.openWindows();
-      if (windows.length === 0) return 0;
-      return Math.max(0, ...windows.filter(w => w.state !== 'minimized').map(w => w.zIndex));
-  });
-
   onAppClick(window: AppWindow) {
-    if (window.zIndex === this.highestZIndex() && window.state !== 'minimized') {
+    if (this.activeAppId() === window.appId) {
         this.minimizeWindow.emit(window.id);
     } else {
         this.focusWindow.emit(window.id);
     }
-  }
-
-  isActive(appId: string): boolean {
-    const highestZ = this.highestZIndex();
-    if (highestZ === 0) return false;
-    return this.openWindows().some(w => w.appId === appId && w.zIndex === highestZ && w.state !== 'minimized');
   }
 
   onDragOver(event: DragEvent, appId: string) {
