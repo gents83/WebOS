@@ -1,10 +1,12 @@
 import { Component, ChangeDetectionStrategy, input, output, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import type { App } from '../../models/app.model';
 
 @Component({
   selector: 'app-desktop-icon',
   // Fix: Set ChangeDetectionStrategy to OnPush for better performance with signal-based components.
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CommonModule],
   template: `
 @let appData = app();
 <div
