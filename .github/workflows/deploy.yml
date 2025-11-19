@@ -45,7 +45,7 @@ jobs:
         
       - run: |
           npm run build --if-present
-          cp index.html dist/index.html
+          if [ -f "src/index.html" ]; then cp src/index.html dist/index.html; fi
           if [ -f "src/style.css" ]; then cp src/style.css dist/style.css; fi
           
       - name: Setup Pages
