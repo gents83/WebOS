@@ -5,6 +5,7 @@ import type { App } from '../../models/app.model';
 
 @Component({
   selector: 'app-start-menu',
+  standalone: true,
   // Fix: Set ChangeDetectionStrategy to OnPush for better performance with signal-based components.
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
