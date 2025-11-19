@@ -44,6 +44,7 @@ jobs:
         run:  |
           npm install
           npm install typescript --save-dev
+          npm install @angular/common@latest @angular/compiler@latest @angular/core@latest @angular/forms@latest @angular/platform-browser@latest @angular/platform-browser-dynamic@latest @angular/router@latest rxjs@latest zone.js@latest
         
       - run: |
           npm run build --if-present
