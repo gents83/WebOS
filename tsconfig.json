@@ -1,37 +1,37 @@
 {
   "compilerOptions": {
     "outDir": "./dist-temp",
+    "rootDir": ".",
     "target": "ES2022",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "useDefineForClassFields": false,
-    "module": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
     "lib": [
       "ES2022",
       "DOM",
       "DOM.Iterable"
     ],
-    "skipLibCheck": true,
     "types": [
       "node"
     ],
-    "moduleResolution": "bundler",
     "isolatedModules": true,
     "moduleDetection": "force",
+    "skipLibCheck": true,
     "allowJs": true,
     "jsx": "react-jsx",
-    "paths": {
-      "@/*": [
-        "./*"
-      ]
-    }
   },
-  "files": [
-    "./index.tsx"
-  ],
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "index.tsx"
   ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "dist-temp"
+  ]
   "angularCompilerOptions": {
     "disableTypeScriptVersionCheck": true
   }
