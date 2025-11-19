@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "tsc && esbuild dist-temp/index.js --bundle --outfile=dist/main.js --public-path=/WebOS/ --format=esm --sourcemap --loader:.png=file --loader:.jpg=file --loader:.svg=file --loader:.woff2=file --define:ngDevMode=true --define:ngJitMode=true"
+    "build": "tsc && esbuild dist-temp/index.js --bundle --outfile=dist/main.js --public-path=/WebOS/ --format=esm --keep-names --sourcemap --loader:.png=file --loader:.jpg=file --loader:.svg=file --loader:.woff2=file --define:ngDevMode=true --define:ngJitMode=true"
   },
 "dependencies": {  
     "@angular/animations": "^20.3.12",
