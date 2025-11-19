@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "esbuild index.tsx --bundle --outfile=dist/main.js --format=esm --minify --sourcemap --public-path=/WebOS/ --loader:.png=file --loader:.jpg=file --loader:.svg=file --loader:.woff2=file --define:ngDevMode=true --define:ngJitMode=true"
+    "build": "tsc && esbuild index.tsx --bundle --outfile=dist/main.js --format=esm --minify --sourcemap --public-path=/WebOS/ --loader:.png=file --loader:.jpg=file --loader:.svg=file --loader:.woff2=file --define:ngDevMode=true --define:ngJitMode=true"
   },
   "dependencies": {
     "@angular/common": "^20.3.12",
