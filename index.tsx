@@ -1,4 +1,5 @@
 import '@angular/compiler';
+import 'zone.js';
 import { platformBrowser } from '@angular/platform-browser'; 
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideHttpClient } from '@angular/common/http';
