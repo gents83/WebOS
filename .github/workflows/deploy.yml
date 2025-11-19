@@ -46,6 +46,7 @@ jobs:
       - run: |
           npm run build --if-present
           cp index.html dist/index.html
+          cp src/style.css dist/style.css
           
       - name: Setup Pages
         uses: actions/configure-pages@v5
