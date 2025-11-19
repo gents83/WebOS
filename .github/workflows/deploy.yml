@@ -48,8 +48,8 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
         with:
-          # You may remove this line if you want to manage the configuration yourself.
-          static_site_generator: node
+          token: ${{ secrets.GITHUB_TOKEN }} # Ensure this token is correct
+          enablement: false
           
       - name: Restore cache
         uses: actions/cache@v4
