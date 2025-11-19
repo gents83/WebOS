@@ -13,6 +13,7 @@ import { PropertiesComponent } from '../apps/properties/properties.component';
 
 @Component({
   selector: 'app-window',
+  standalone: true,
   template: `
 @let win = window();
 <div
