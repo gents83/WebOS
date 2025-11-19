@@ -31,7 +31,7 @@
     "node_modules",
     "dist",
     "dist-temp"
-  ]
+  ],
   "angularCompilerOptions": {
     "disableTypeScriptVersionCheck": true
   }
