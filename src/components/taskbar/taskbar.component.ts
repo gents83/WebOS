@@ -5,6 +5,7 @@ import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-taskbar',
+  standalone: true,
   // Fix: Set ChangeDetectionStrategy to OnPush for better performance with signal-based components.
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
