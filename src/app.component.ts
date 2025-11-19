@@ -17,7 +17,7 @@ import { FileSystemService } from './services/file-system.service';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
+  templateUrl: 'app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
