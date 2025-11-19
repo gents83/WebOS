@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "esbuild index.tsx --bundle --outfile=dist/main.js --format=esm --minify --sourcemap --loader:.png=file --loader:.jpg=file --loader:.svg=file --loader:.woff2=file --define:ngDevMode=false --define:ngJitMode=false"
+    "build:css": "tailwindcss -i ./src/index.css -o ./dist/main.css --minify",
+    "build:js": "esbuild index.tsx --bundle --outfile=dist/main.js --format=esm --minify --sourcemap --loader:.png=file --loader:.jpg=file --loader:.svg=file --loader:.woff2=file --define:ngDevMode=false --define:ngJitMode=false",
+    "build": "npm run build:css && npm run build:js"
   },
   "dependencies": {
     "@angular/common": "^20.3.12",
