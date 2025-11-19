@@ -32,9 +32,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Cleanup
-        run: |
-          rm package-lock.json          
-          rm -rf dist dist-temp
+        run: rm -rf dist dist-temp
 
       - name: Generate package-lock.json
         run: npm i --package-lock-only
