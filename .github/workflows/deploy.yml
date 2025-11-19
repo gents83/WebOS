@@ -43,8 +43,10 @@ jobs:
       - name: Install dependencies
         run: npm ci  # Installs dependencies strictly from package-lock.json
         
-      - run: npm run build --if-present
-      
+      - run: |
+          npm run build --if-present
+          cp index.html dist/index.html  # <--- ADD THIS LINE
+          
       - name: Setup Pages
         uses: actions/configure-pages@v5
         with:
