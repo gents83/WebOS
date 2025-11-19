@@ -5,6 +5,15 @@
   "scripts": {
     "build": "esbuild index.tsx --bundle --outfile=dist/main.js --format=esm --minify --sourcemap --define:ngDevMode=false --define:ngJitMode=false"
   },
+  "dependencies": {
+    "@angular/common": "^20.3.12",
+    "@angular/compiler": "^20.3.12",
+    "@angular/core": "^20.3.12",
+    "@angular/forms": "^20.3.12",
+    "@angular/platform-browser": "^20.3.12",
+    "@google/genai": "^1.29.1",
+    "rxjs": "^7.8.2"
+  },
   "devDependencies": {
     "esbuild": "^0.23.0"
   }
